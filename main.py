@@ -17,6 +17,7 @@ class MyPlugin(Star):
 
     @filter.event_message_type(filter.EventMessageType.GROUP_MESSAGE)
     async def on_group_message(self, event: AstrMessageEvent):
+        logger.info(f"收到事件类型: {type(event)}, 消息: {event.message_str}")
         """群消息监听回复"""
         group_id = event.get_group_id()  # 群号
         sender_id = event.get_sender_id()  # 发送者qq号
