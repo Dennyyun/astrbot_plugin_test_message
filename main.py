@@ -1,4 +1,4 @@
-from astrbot.api.event import filter, AstrMessageEvent, MessageEventResult, CommandResult
+from astrbot.api.event import filter, AstrMessageEvent, MessageEventResult
 from astrbot.api.star import Context, Star, register
 from astrbot.api import logger
 import astrbot.api.message_components as Comp
@@ -25,11 +25,14 @@ class MyPlugin(Star):
         user_id = event.get_group_id()# 发送者qq号
         message = event.get_message_str()  # 消息内容
         logger.info(f"收到群{group_id}，{sender_name}的消息：{message}")
-
+        chain = [
+            Comp.Plain("你好呀！收到你的消息了！"),
+            Comp.At(qq=event.get_sender_id())
+        ]
         if '你好' in message:
-            yield CommandResult.message("你好呀！收到你的消息了！").at(sender_name,user_id)
+            yield event.chain_result(chain)
         else:
-            yield CommandResult.message("你好").at(sender_name,user_id)
+            yield event.chain_result([Comp.Plain("哈哈哈"), Comp.At(qq=event.get_sender_id())])
 
 
     # 注册指令的装饰器。指令名为 helloworld。注册成功后，发送 `/helloworld` 就会触发这个指令，并回复 `你好, {user_name}!`
