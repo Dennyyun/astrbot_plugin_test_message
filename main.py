@@ -27,8 +27,7 @@ class MyPlugin(Star):
         logger.info(message_chain)
         yield event.plain_result(f"Hello, {user_id}, 你发了 {message_str}!")  # 发送一条纯文本消息
 
-
-    @filter.event_message_type(filter.EventMessageType.PRIVATE_MESSAGE)
-    async def on_private_message(self, event: AstrMessageEvent):
+    @filter.event_message_type(filter.EventMessageType.GROUP_MESSAGE)
+    async def on_group_message(self, event: AstrMessageEvent):
         message_str = event.message_str
-        yield event.plain_result(f"Hello, {message_str}")
+        yield event.plain_result("A message was received")
