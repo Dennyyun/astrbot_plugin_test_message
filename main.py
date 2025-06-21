@@ -17,6 +17,7 @@ class MyPlugin(Star):
 
     @filter.event_message_type(filter.EventMessageType.GROUP_MESSAGE)
     async def on_group_message(self, event: AstrMessageEvent):
+        """群消息监听"""
         logger.info(f"收到事件类型: {type(event)}, 消息: {event.message_str}")
         """群消息监听回复"""
         group_id = event.get_group_id()  # 群号
@@ -32,10 +33,10 @@ class MyPlugin(Star):
     # 注册指令的装饰器。指令名为 helloworld。注册成功后，发送 `/helloworld` 就会触发这个指令，并回复 `你好, {user_name}!`
     @filter.command("helloworld")
     async def helloworld(self, event: AstrMessageEvent):
-        """这是一个 群消息监听插件 test"""  # 这是 handler 的描述，将会被解析方便用户了解插件内容。建议填写。
+        """/helloword 指令回复"""  # 这是 handler 的描述，将会被解析方便用户了解插件内容。建议填写。
         user_name = event.get_sender_name()
         user_id = event.get_sender_id()  # 获取用户 ID
         message_str = event.message_str  # 用户发的纯文本消息字符串
         message_chain = event.get_messages()  # 用户所发的消息的消息链 # from astrbot.api.message_components import *
         logger.info(message_chain)
-        yield event.plain_result(f"Hello, {user_id}, 你发了 {message_str}!哈哈哈哈{Comp.At(qq=user_id)}")  # 发送一条纯文本消息
+        yield event.plain_result(f"Hello, {user_id}, 你发了 {message_str}!哈哈哈哈@{user_id}")  # 发送一条纯文本消息
