@@ -27,9 +27,10 @@ class MyPlugin(Star):
         logger.info(f"收到群{group_id}，{sender_name}的消息：{message}")
 
         if '你好' in message:
-            yield event.plain_result(f"你好呀！收到你的消息了！@{sender_name}")
+            yield MessageChain().message("你好呀！收到你的消息了！").at(sender_name,user_id)
         else:
             yield MessageChain().message("你好").at(sender_name,user_id)
+
 
     # 注册指令的装饰器。指令名为 helloworld。注册成功后，发送 `/helloworld` 就会触发这个指令，并回复 `你好, {user_name}!`
     @filter.command("helloworld")
