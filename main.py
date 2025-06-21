@@ -1,9 +1,10 @@
 from astrbot.api.event import filter, AstrMessageEvent, MessageEventResult
 from astrbot.api.star import Context, Star, register
 from astrbot.api import logger
+import astrbot.api.message_components as Comp
 
 
-@register("helloworld", "Denny", "一个简单的 Hello World 插件", "1.0.0")
+@register("my_group_plugin", "Denny", "一个群消息处理插件", "1.0.0")
 class MyPlugin(Star):
     def __init__(self, context: Context):
         super().__init__(context)
@@ -13,6 +14,19 @@ class MyPlugin(Star):
 
     async def terminate(self):
         """可选择实现异步的插件销毁方法，当插件被卸载/停用时会调用。"""
+
+    @filter.event_message_type(filter.EventMessageType.GROUP_MESSAGE)
+    async def on_group_message(self, event: AstrMessageEvent):
+        """群消息监听回复"""
+        group_id = event.get_group_id()  # 群号
+        sender_id = event.get_sender_id()  # 发送者qq号
+        message = event.get_message_str()  # 消息内容
+        logger.info(f"收到群{group_id}消息：{message}")
+
+        if '你好' in message:
+            yield event.plain_result(f"你好呀！收到你的消息了{Comp.At(qq=f'{sender_id}')}")
+        elif '菜单' in message:
+            yield event.plain_result(f"testtest！！！")
 
     # 注册指令的装饰器。指令名为 helloworld。注册成功后，发送 `/helloworld` 就会触发这个指令，并回复 `你好, {user_name}!`
     @filter.command("helloworld")
@@ -24,10 +38,3 @@ class MyPlugin(Star):
         message_chain = event.get_messages()  # 用户所发的消息的消息链 # from astrbot.api.message_components import *
         logger.info(message_chain)
         yield event.plain_result(f"Hello, {user_id}, 你发了 {message_str}!")  # 发送一条纯文本消息
-
-    @filter.event_message_type(filter.EventMessageType.GROUP_MESSAGE)
-    async def on_group_message(self, event: AstrMessageEvent):
-        message_str = event.message_str
-        messages_chain = event.get_messages()
-        logger.info(f"Received event: {messages_chain}")
-        yield event.plain_result("A message was received")
