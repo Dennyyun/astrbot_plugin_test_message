@@ -1,5 +1,5 @@
 name: test_message # 这是你的插件的唯一识别名。
-desc: 这是 AstrBot 的默认插件，支持关键词回复。 # 插件简短描述
+desc: 这是一个消息监听处理事件插件 # 插件简短描述
 version: v1.1 # 插件版本号。格式：v1.1.1 或者 v1.1
 author: Danny # 作者
 repo: https://github.com/Dennyyun/astrbot_plugin_test_message.git # 插件的仓库地址
