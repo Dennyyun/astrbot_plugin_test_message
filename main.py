@@ -1,8 +1,6 @@
 from astrbot.api.event import filter, AstrMessageEvent, MessageEventResult
 from astrbot.api.star import Context, Star, register
 from astrbot.api import logger
-import astrbot.api.message_components as Comp
-from astrbot.core.platform import AstrBotMessage
 
 
 @register("helloworld", "Denny", "一个简单的 Hello World 插件", "1.0.0")
@@ -18,7 +16,7 @@ class MyPlugin(Star):
 
     # 注册指令的装饰器。指令名为 helloworld。注册成功后，发送 `/helloworld` 就会触发这个指令，并回复 `你好, {user_name}!`
     @filter.command("helloworld")
-    async def helloworld(self, event: AstrMessageEvent, message: AstrBotMessage):
+    async def helloworld(self, event: AstrMessageEvent):
         """这是一个 hello world 指令"""  # 这是 handler 的描述，将会被解析方便用户了解插件内容。建议填写。
         user_name = event.get_sender_name()
         user_id = event.get_sender_id()  # 获取用户 ID
@@ -30,4 +28,6 @@ class MyPlugin(Star):
     @filter.event_message_type(filter.EventMessageType.GROUP_MESSAGE)
     async def on_group_message(self, event: AstrMessageEvent):
         message_str = event.message_str
+        messages_chain = event.get_messages()
+        logger.info(f"Received event: {messages_chain}")
         yield event.plain_result("A message was received")
