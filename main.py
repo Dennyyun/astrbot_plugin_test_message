@@ -1,6 +1,7 @@
 from astrbot.api.event import filter, AstrMessageEvent, MessageEventResult
 from astrbot.api.star import Context, Star, register
 from astrbot.api import logger
+import astrbot.api.message_components  as Comp
 
 
 @register("helloworld", "YourName", "一个简单的 Hello World 插件", "1.0.0")
@@ -20,12 +21,13 @@ class MyPlugin(Star):
         message_str = event.message_str  # 用户发的纯文本消息字符串
         message_chain = event.get_messages()  # 用户所发的消息的消息链 # from astrbot.api.message_components import *
         logger.info(message_chain)
-        yield event.plain_result(f"Hello, {user_id}, 你发了 {message_str}!")  # 发送一条纯文本消息
+        yield event.plain_result(f"Hello, {Comp.At.qq}, 你发了 {message_str}!")  # 发送一条纯文本消息
 
-    @filter.event_message_type(filter.EventMessageType.PRIVATE_MESSAGE)
+    @filter.event_message_type(filter.EventMessageType.GROUP_MESSAGE)
     async def on_private_message(self, event: AstrMessageEvent):
         message_str = event.message_str
         yield event.plain_result(f"Hello, {message_str}")
+
 
     async def terminate(self):
         """可选择实现异步的插件销毁方法，当插件被卸载/停用时会调用。"""
