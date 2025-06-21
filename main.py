@@ -4,7 +4,7 @@ from astrbot.api import logger
 import astrbot.api.message_components as Comp
 
 
-@register("my_group_plugin", "Denny", "一个群消息处理插件", "1.0.0")
+@register("my_group_plugin", "Denny", "一个群消息处理插件", "1.2.0")
 class MyPlugin(Star):
     def __init__(self, context: Context):
         super().__init__(context)
