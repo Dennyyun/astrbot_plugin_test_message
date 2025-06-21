@@ -21,12 +21,12 @@ class MyPlugin(Star):
         logger.info(f"收到事件类型: {type(event)}, 消息: {event.message_str}")
         """群消息监听回复"""
         group_id = event.get_group_id()  # 群号
-        sender_id = event.get_sender_id()  # 发送者qq号
+        sender_name = event.get_sender_name()  # 发送者qq号
         message = event.get_message_str()  # 消息内容
-        logger.info(f"收到群{group_id}消息：{message}")
+        logger.info(f"收到群{group_id}，{sender_name}的消息：{message}")
 
         if '你好' in message:
-            yield event.plain_result(f"你好呀！收到你的消息了{Comp.At(qq=f'{sender_id}')}")
+            yield event.plain_result(f"你好呀！收到你的消息了！@{sender_name}")
         elif '菜单' in message:
             yield event.plain_result(f"testtest！！！")
 
