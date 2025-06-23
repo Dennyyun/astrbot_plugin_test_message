@@ -5,6 +5,7 @@ import random
 from requests.adapters import HTTPAdapter
 import time
 
+from urllib3 import Retry
 
 """ https://s.taobao.com/search?_input_charset=utf-8&commend=all&ie=utf8&initiative_id=tbindexz_20170306&page=1&preLoadOrigin=https%3A%2F%2Fwww.taobao.com&q=%E6%B0%B4%E6%9E%9C&search_type=item&source=suggest&sourceId=tb.index&spm=a21bo.jianhua%2Fa.search_history.d1&ssid=s5-e&suggest_query=&tab=all&wq= """
 
@@ -13,7 +14,7 @@ class TaobaoSearch:
         self.data = data
                
         
-    def create_session():
+    def create_session(self):
         """创建带重试机制的会话"""
         session = requests.Session()
 
@@ -32,7 +33,7 @@ class TaobaoSearch:
         return session
         
 
-    def get_random_headers():
+    def get_random_headers(self):
         """生成随机请求头"""
         ua = UserAgent()
         return {
