@@ -1,8 +1,8 @@
-from astrbot.api.event import filter, AstrMessageEvent
+from astrbot.api.event import filter, AstrMessageEvent, MessageEventResult
 from astrbot.api.star import Context, Star, register
 from astrbot.api import logger
 import astrbot.api.message_components as Comp
-
+import python_script
 
 @register("my_group_plugin", "Denny", "一个群消息处理插件", "1.2.0")
 class MyPlugin(Star):
@@ -30,7 +30,7 @@ class MyPlugin(Star):
                 Comp.Plain("你好呀！收到你的消息了！"), Comp.At(qq=user_id)])
         elif "淘宝搜索："in message:
             const_key = message.split("淘宝搜索：")[1]
-            result = data.plugins.astrbot_plugin_test_message.python_script.taobao.main(const_key)
+            result = python_script.taobao.main(const_key)
             yield event.chain_result([Comp.Plain(result), Comp.At(qq=user_id)])
         else:
             yield event.chain_result([Comp.Plain("哈哈哈"), Comp.At(qq=user_id)])
